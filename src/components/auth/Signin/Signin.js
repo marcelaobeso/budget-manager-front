@@ -1,18 +1,10 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import SignUpForm from "../SignUpForm/SignUpForm";
-import EWallet from "../../assets/images/eWallet.svg";
+import SignUpForm from "./SignUpForm/SignUpForm";
+import EWallet from "../../../assets/images/eWallet.svg";
 
-import {
-  changeToLog,
-  changeToSign,
-} from "../../store/slices/logSlice/logSlice";
 import { Link } from "react-router-dom";
 
 const Signin = () => {
-  const { login } = useSelector((state) => state.log);
-  const dispatch = useDispatch();
-
   return (
     <div className="App">
       <Container>

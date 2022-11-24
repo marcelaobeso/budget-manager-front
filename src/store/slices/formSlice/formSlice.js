@@ -1,23 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  userId: null,
-  username: "",
-  password: "",
+  showAddExpenseForm: false,
+  showAddAccountForm: false,
 };
 
 export const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
-    loginUser: (state, action) => {
-      state.username = action.payload.email;
-      state.password = action.payload.password;
+    transactionForm: (state) => {
+      state.showAddExpenseForm = !state.showAddExpenseForm;
+    },
+    accountForm: (state, { payload }) => {
+      state.showAddAccountForm = payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { loginUser } = formSlice.actions;
+export const { transactionForm, accountForm } = formSlice.actions;
 
 export default formSlice.reducer;

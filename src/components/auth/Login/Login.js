@@ -1,14 +1,9 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import LoginForm from "../LoginForm/LoginForm";
-import Income from "../../assets/images/income.svg";
-import { changeToSign } from "../../store/slices/logSlice/logSlice";
+import Income from "../../../assets/images/income.svg";
 import { Link } from "react-router-dom";
+import LoginForm from "./LoginForm/LoginForm";
 
 const Login = () => {
-  const { login } = useSelector((state) => state.log);
-  const dispatch = useDispatch();
-
   return (
     <div className="App">
       <Container>
@@ -21,7 +16,7 @@ const Login = () => {
             <div>
               <img src={Income} alt="Income, peggybank on top of a laptop" />
               <p>Sing up instead if you dont have an account yet</p>
-              <Link to={"/"}>
+              <Link to={"/sign"}>
                 <Button variant="secondary">Sign up</Button>
               </Link>
             </div>
