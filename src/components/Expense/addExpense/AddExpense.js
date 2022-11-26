@@ -9,29 +9,27 @@ import {
 } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { transactionForm } from "../../../store/slices/formSlice/formSlice";
+import { AmountMoneyInput } from "../../UI/AmountMoneyInput";
+import { CurrencySelect } from "../../UI/CurrencySelect";
 
 export const AddExpense = () => {
+  const [expenseType, setExpenseType] = useState("");
+  const [expenseAccount, setExpenseAccount] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
-  const [showForm, setShowform] = useState(false);
 
   const dispatch = useDispatch();
+  // collects the type of expense and asigns the state in const
+  const valueTypeHandler = (event) => {
+    setExpenseType(event);
+  };
 
-  const formHandler = () => {
-    setShowform((prevState) => {
-      setShowform(!prevState);
-    });
+  const valueAccountHandler = (event) => {
+    const account = Number(event.target.text.split(" ").shift());
+    setExpenseAccount(account);
   };
-  const valueHanddler = (event) => {
-    console.log(event);
-  };
-  const titleChangeHandler = (event) => {
-    setEnteredTitle(event.target.value);
-  };
-  const amountChangeHandler = (event) => {
-    setEnteredAmount(event.target.value);
-  };
+
   const dateChangeHandler = (event) => {
     setEnteredDate(event.target.value);
   };
@@ -50,14 +48,11 @@ export const AddExpense = () => {
     setEnteredTitle("");
     setEnteredAmount("");
     setEnteredDate("");
-    formHandler();
   };
   const accounts = [
     { type: "savings", number: 542345134 },
     { type: "checking", number: 1341234 },
   ];
-
-  const currency = ["USD", "GTQ", "EUR", "CAD"];
 
   const category = [
     "Food & Drinks",
@@ -77,7 +72,8 @@ export const AddExpense = () => {
     <Form onSubmit={submitHandler}>
       <div>AddExpense</div>
       <br />
-      <ToggleButtonGroup type="radio" name="type" onChange={valueHanddler}>
+      {/* Expense type radio button selector  */}
+      <ToggleButtonGroup type="radio" name="Type" onChange={valueTypeHandler}>
         <ToggleButton id="Income" value="Income" variant="outline-success">
           Income
         </ToggleButton>
@@ -87,10 +83,16 @@ export const AddExpense = () => {
       </ToggleButtonGroup>
       <br />
       <br />
+      {/* Account selection dropdown */}
       <DropdownButton id="dropdown-account" title="Account" variant="secondary">
         {accounts.map((item, index) => (
-          <Dropdown.Item key={index} variant="dark">
-            {item.number}, {item.type}
+          <Dropdown.Item
+            key={index}
+            variant="dark"
+            onClick={valueAccountHandler}
+            value={item.number}
+          >
+            {item.number} | {item.type}
           </Dropdown.Item>
         ))}
       </DropdownButton>
@@ -98,26 +100,10 @@ export const AddExpense = () => {
 
       <div className="new-expense__control">
         <label>Amount</label>
-        <input
-          type="number"
-          min="0.01"
-          step="0.01"
-          value={enteredAmount}
-          onChange={amountChangeHandler}
-        />
+        <AmountMoneyInput />
       </div>
       <br />
-      <DropdownButton
-        id="dropdown-currency"
-        title="Currency"
-        variant="secondary"
-      >
-        {currency.map((item, index) => (
-          <Dropdown.Item key={index} variant="dark">
-            {item}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
+      <CurrencySelect />
       <br />
       <DropdownButton
         id="dropdown-category"
@@ -142,7 +128,7 @@ export const AddExpense = () => {
         />
       </div>
       <br />
-      <Button type="button" variant="dark" onClick={formHandler}>
+      <Button type="button" variant="dark" onClick={() => {}}>
         Add
       </Button>
       <Button

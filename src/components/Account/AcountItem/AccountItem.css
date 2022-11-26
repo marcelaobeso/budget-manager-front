@@ -45,6 +45,13 @@
   padding: 0.5rem;
   border-radius: 12px;
 }
+.account-item button {
+  font-size: 20px;
+}
+.account-item button:hover {
+  font-size: 25px;
+  color: #ffffff;
+}
 
 @media (min-width: 580px) {
   .account-item__description {

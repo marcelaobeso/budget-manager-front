@@ -1,9 +1,9 @@
 import { Account } from "./Account/Account";
-import { Transaction } from "./transactions/Transaction";
+import { Transaction } from "./Expense/Transaction";
 import NavigationBar from "./Navbar/NavigationBar";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { AddExpense } from "./transactions/addExpense/AddExpense";
+import { AddExpense } from "./Expense/addExpense/AddExpense";
 import { AddAccount } from "./Account/AddAccount/AddAccount";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -18,9 +18,8 @@ const Budget = () => {
     useSelector((state) => state.form);
   const dispatch = useDispatch();
   const showAddExpenseHanddler = () => {
-    dispatch(transactionForm());
+    dispatch(transactionForm(true));
   };
-  console.log(showAccount);
   const ShowAddAccountHanddler = () => {
     dispatch(accountForm(true));
   };
