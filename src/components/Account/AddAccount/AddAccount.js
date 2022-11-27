@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { newNotDeletedAccountList } from "../../../store/slices/formSlice/accountSlice";
+import { newNotDeletedAccountList } from "../../../store/slices/formSlice/accountSlice/accountSlice";
+import addedItem from "../../../store/slices/formSlice/accountSlice/thunk";
 import {
   accountBalanceValidator,
   accountForm,
@@ -10,7 +11,7 @@ import {
   addNewAccountItem,
   updateEnabler,
 } from "../../../store/slices/formSlice/formSlice";
-import addedItem from "../../../store/slices/formSlice/thunk";
+
 import { AmountMoneyInput } from "../../UI/AmountMoneyInput";
 import { CurrencySelect } from "../../UI/CurrencySelect";
 import styles from "./AddAccount.module.css";
@@ -133,7 +134,6 @@ export const AddAccount = () => {
       };
       dispatch(addNewAccountItem(accountItem));
       dispatch(updateEnabler(false));
-      dispatch(accountForm(false));
     } else {
       dispatch(
         addNewAccountItem({ ...newAccountItem, id: newAccountItem.id + 1 })
@@ -148,8 +148,8 @@ export const AddAccount = () => {
         balance: "",
       };
       dispatch(addNewAccountItem(accountItem));
-      dispatch(accountForm(false));
     }
+    dispatch(accountForm(false));
   };
 
   return (

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { newNotDeletedAccountList } from "../../../store/slices/formSlice/accountSlice";
+import { newNotDeletedAccountList } from "../../../store/slices/formSlice/accountSlice/accountSlice";
 import {
   accountForm,
   addNewAccountItem,
@@ -13,7 +13,6 @@ import "./AccountItem.css";
 
 export const AccountItem = () => {
   const accountList = useSelector((store) => store.account.accountList);
-  const { newAccountItem } = useSelector((store) => store.form);
   const dispatch = useDispatch();
 
   const deleteAccount = (id) => {

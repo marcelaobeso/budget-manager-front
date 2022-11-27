@@ -12,6 +12,7 @@ import {
   accountForm,
   transactionForm,
 } from "../store/slices/formSlice/formSlice";
+import { DateFilter } from "./Filters/DateFilter/DateFilter";
 
 const Budget = () => {
   const { showAddExpenseForm: showExpense, showAddAccountForm: showAccount } =
@@ -59,6 +60,7 @@ const Budget = () => {
           </Col>
         </Row>
       </Container>
+      <DateFilter />
     </>
   );
 };

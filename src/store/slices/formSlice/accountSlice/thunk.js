@@ -1,14 +1,14 @@
-import { appendItemToAccountList } from "./accountSlice";
+import { appendItemToAccountList } from "./accountSlice.js";
 
-const addedItem = () => {
+const addedItem = (itemType) => {
   return (dispatch, getState) => {
     // const replacedColor = {
     // 	id: 0,
     // 	name: '',
     // };
+
     const newAddedItem = getState().form.newAccountItem;
 
-    // eslint-disable-next-line no-console
     dispatch(appendItemToAccountList(newAddedItem));
   };
 };

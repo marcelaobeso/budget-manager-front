@@ -6,7 +6,7 @@
   padding: 0.5rem;
   margin: 1rem 0;
   border-radius: 12px;
-  background-color: #4b4b4b;
+  background-color: #c3c2c2;
 }
 
 .expense-item__center {
@@ -36,7 +36,7 @@
   color: white;
 }
 
-.expense-item__price {
+.expense-item__price.expense {
   font-size: 1rem;
   font-weight: bold;
   width: fit-content;
@@ -45,6 +45,23 @@
   border: 1px solid white;
   padding: 0.5rem;
   border-radius: 12px;
+}
+.expense-item__price.income {
+  font-size: 1rem;
+  font-weight: bold;
+  width: fit-content;
+  color: white;
+  background-color: #007610;
+  border: 1px solid white;
+  padding: 0.5rem;
+  border-radius: 12px;
+}
+.expense-item button {
+  font-size: 16px;
+}
+.expense-item button:hover {
+  font-size: 21px;
+  color: #ffffff;
 }
 
 @media (min-width: 580px) {

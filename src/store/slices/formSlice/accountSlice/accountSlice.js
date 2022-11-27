@@ -1,7 +1,16 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
-  accountList: [],
+  accountList: [
+    {
+      id: 0,
+      name: "miaw, miaw",
+      number: 9345693,
+      type: "Current Account",
+      currency: "GTQ",
+      balance: 234,
+    },
+  ],
 };
 
 export const accountSlice = createSlice({
