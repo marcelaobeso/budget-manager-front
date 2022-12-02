@@ -12,7 +12,7 @@ const initialState = {
     name: "",
     number: "",
     type: "General",
-    currency: "USD",
+    id_currency: "USD",
     balance: "",
   },
   expensesList: [],
@@ -42,7 +42,7 @@ export const formSlice = createSlice({
       state.newAccountItem.name = payload.name;
       state.newAccountItem.number = payload.number;
       state.newAccountItem.type = payload.type;
-      state.newAccountItem.currency = payload.currency;
+      state.newAccountItem.id_currency = payload.id_currency;
       state.newAccountItem.balance = payload.balance;
       current(state.newAccountItem);
     },

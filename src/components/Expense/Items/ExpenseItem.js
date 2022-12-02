@@ -3,6 +3,7 @@ import styles from "./ExpenseItem.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   addExpenseItem,
   newNotDeletedExpenseList,
@@ -12,19 +13,23 @@ import {
   transactionForm,
   updateEnabler,
 } from "../../../store/slices/formSlice/formSlice";
+import { getAllExpenses } from "../../../store/slices/formSlice/expenseSlice/thunk";
+import { useEffect } from "react";
 
 export const ExpenseItem = () => {
   const { expenseList } = useSelector((state) => state.expense);
-  const { viewExpenseList } = useSelector((state) => state.dateFilter);
-  console.log(viewExpenseList);
+
   const dispatch = useDispatch();
+
   const deleteAccount = (id) => {
     //let deletedItem = accountList.find((i) => i.number === id);
     let newExpensesList = expenseList.filter((item) => item.id !== id);
     dispatch(newNotDeletedExpenseList(newExpensesList));
   };
+
   const updateAccount = (id) => {
-    let itemToUpdate = expenseList.find((i) => i.id === id);
+    console.log(id);
+    let itemToUpdate = expenseList.find((i) => i.id_expense === id);
     dispatch(updateEnabler(true));
     dispatch(transactionForm(true));
     dispatch(addExpenseItem(itemToUpdate));
@@ -33,14 +38,18 @@ export const ExpenseItem = () => {
     const index = expenseList.map((object) => object.id).indexOf(id);
     dispatch(showDescriptionEnabler(index));
   };
+  useEffect(() => {
+    dispatch(getAllExpenses());
+  }, []);
+  console.log(expenseList);
 
   return expenseList.length > 0 ? (
     expenseList.map((i, index) => (
-      <Container key={i.id}>
+      <Container key={i.id_expense}>
         <Row className={`${styles["expense-item"]}`}>
           <Col>
-            <Row>{i.category}</Row>
-            <Row>{i.account}</Row>
+            <Row>{i.id_category}</Row>
+            <Row>{i.origin_account}</Row>
           </Col>
           <Col className={`${styles["expense-item__center"]}`}>
             <button
@@ -49,7 +58,7 @@ export const ExpenseItem = () => {
             >
               <FontAwesomeIcon icon={faEye} />
             </button>
-            <button onClick={() => updateAccount(i.id)}>
+            <button onClick={() => updateAccount(i.id_expense)}>
               <FontAwesomeIcon icon={faPencil} />
             </button>
             <button onClick={() => deleteAccount(i.id)}>
@@ -60,13 +69,13 @@ export const ExpenseItem = () => {
             <Row>
               <div
                 className={`${styles["expense-item__price"]} ${
-                  i.expenseType === "Income" ? styles.income : styles.expense
+                  i.expense_type === "Income" ? styles.income : styles.expense
                 }`}
               >
-                {i.currency} {i.amount}
+                {i.id_currency} {i.amount}
               </div>
             </Row>
-            <Row>{i.date}</Row>
+            <Row>{i.expense_date}</Row>
           </Col>
           {i.showDescription && <div>{i.description}</div>}
         </Row>

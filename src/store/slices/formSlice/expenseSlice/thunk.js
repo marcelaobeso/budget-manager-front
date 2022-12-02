@@ -1,15 +1,22 @@
-import { appendItemToExpenseList } from "./expenseSlice";
+import budgetApi from "../../../../api/budgetApi";
+import {
+  appendItemToExpenseList,
+  newNotDeletedExpenseList,
+} from "./expenseSlice";
 
-const addedItem = () => {
+export const addedItem = () => {
   return (dispatch, getState) => {
-    // const replacedColor = {
-    // 	id: 0,
-    // 	name: '',
-    // };
-
     const newAddedExpense = getState().expense.expenseItem;
-    console.log(newAddedExpense);
     dispatch(appendItemToExpenseList(newAddedExpense));
   };
 };
-export default addedItem;
+export const getAllExpenses = () => {
+  return async (dispatch, getState) => {
+    const { userInfo } = getState().signUp;
+    const { data } = await budgetApi.get("/expense/expenses", {
+      params: { idUser: userInfo.idUser },
+    });
+    console.log(data);
+    dispatch(newNotDeletedExpenseList(data.expenses));
+  };
+};

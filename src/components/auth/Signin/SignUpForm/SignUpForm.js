@@ -1,59 +1,177 @@
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
-import { signUpUser } from "../../../../store/slices/signUpSlice/signUpSlice";
-import { useDispatch } from "react-redux";
+import {
+  emailFieldsValidator,
+  fristNameFieldsValidator,
+  lastNameFieldsValidator,
+  passwordFieldsValidator,
+  signUpUser,
+  usernameFieldsValidator,
+} from "../../../../store/slices/signUpSlice/signUpSlice";
+import { useDispatch, useSelector } from "react-redux";
+import styles from "./SignUpForm.module.css";
+import { useAuthStore } from "../../../hooks/useAuthStore.js";
 
 const SignUpForm = () => {
-  // const {} = useSelector()
   const dispatch = useDispatch();
+  const { userInfo, validFields } = useSelector((state) => state.signUp);
+
+  const firstNameHandler = (event) => {
+    if (event.target.value.trim().length > 0) {
+      dispatch(signUpUser({ ...userInfo, firstName: event.target.value }));
+      dispatch(fristNameFieldsValidator({ ...validFields, firstName: true }));
+    }
+  };
+  const lastNameHandler = (event) => {
+    if (event.target.value.trim().length > 0) {
+      dispatch(signUpUser({ ...userInfo, lastName: event.target.value }));
+      dispatch(lastNameFieldsValidator({ ...validFields, lastName: true }));
+    }
+  };
+  const usernameHandler = (event) => {
+    if (event.target.value.trim().length > 0) {
+      dispatch(signUpUser({ ...userInfo, username: event.target.value }));
+      dispatch(usernameFieldsValidator({ ...validFields, username: true }));
+    }
+  };
+  const emailHandler = (event) => {
+    if (event.target.value.length > 4) {
+      dispatch(signUpUser({ ...userInfo, email: event.target.value }));
+      dispatch(emailFieldsValidator({ ...validFields, email: true }));
+    }
+  };
+  const passwordHandler = (event) => {
+    if (event.target.value.trim().length > 0) {
+      dispatch(signUpUser({ ...userInfo, password: event.target.value }));
+      dispatch(passwordFieldsValidator({ ...validFields, password: true }));
+    }
+  };
+  const { signin } = useAuthStore();
   const formHandler = (event) => {
     event.preventDefault();
-    const userInfo = {
-      firstName: event.target.firstName.value,
-      lastName: event.target.lastName.value,
-      username: event.target.username.value,
-      email: event.target.email.value,
-      password: event.target.password.value,
-    };
+    if (
+      userInfo.firstName.trim().length === 0 ||
+      userInfo.lastName.trim().length === 0 ||
+      userInfo.username.trim().length === 0 ||
+      userInfo.email.trim().length === 0 ||
+      userInfo.password.trim().length === 0
+    ) {
+      if (userInfo.firstName.trim().length === 0) {
+        dispatch(
+          fristNameFieldsValidator({ ...validFields, firstName: false })
+        );
+        dispatch(signUpUser({ ...userInfo, firstName: "" }));
+      }
+      if (userInfo.lastName.trim().length === 0) {
+        dispatch(lastNameFieldsValidator({ ...validFields, lastName: false }));
+        dispatch(signUpUser({ ...userInfo, lastName: "" }));
+      }
+      if (userInfo.username.trim().length === 0) {
+        dispatch(usernameFieldsValidator({ ...validFields, username: false }));
+        dispatch(signUpUser({ ...userInfo, username: "" }));
+      }
+      if (userInfo.email.length === 0) {
+        dispatch(emailFieldsValidator({ ...validFields, email: false }));
+        dispatch(signUpUser({ ...userInfo, email: "" }));
+      }
+      if (userInfo.password.trim().length === 0) {
+        dispatch(passwordFieldsValidator({ ...validFields, password: false }));
+        dispatch(signUpUser({ ...userInfo, password: "" }));
+      }
+      return;
+    }
+    console.log(userInfo);
 
-    dispatch(signUpUser(userInfo));
+    signin({
+      email: userInfo.email,
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      password: userInfo.password,
+      username: userInfo.username,
+    });
   };
   return (
     <Form onSubmit={formHandler}>
       <Form.Group className="mb-3" controlId="name">
         <Row className="g-2">
-          <Col md>
-            <FloatingLabel controlId="firstName" label="First Name">
+          <Col
+            md
+            className={`${styles["form-control"]} ${
+              !validFields.firstName && styles.invalid
+            }`}
+          >
+            <FloatingLabel
+              onChange={firstNameHandler}
+              controlId="firstName"
+              label="First Name"
+            >
               <Form.Control type="text" placeholder="First Name" />
             </FloatingLabel>
           </Col>
-          <Col md>
-            <FloatingLabel controlId="lastName" label="Last Name">
+          <Col
+            md
+            className={`${styles["form-control"]} ${
+              !validFields.lastName && styles.invalid
+            }`}
+          >
+            <FloatingLabel
+              onChange={lastNameHandler}
+              controlId="lastName"
+              label="Last Name"
+            >
               <Form.Control type="text" placeholder="Last Name" />
             </FloatingLabel>
           </Col>
         </Row>
       </Form.Group>
-      <Form.Group className="mb-3">
-        <FloatingLabel controlId="username" label="Username">
-          <Form.Control type="text" placeholder="Username" />
-        </FloatingLabel>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <FloatingLabel controlId="email" label="Email address ">
-          <Form.Control type="email" placeholder="name@example.com" />
-        </FloatingLabel>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <FloatingLabel controlId="password" label="Password ">
-          <Form.Control type="password" placeholder="Password" />
-        </FloatingLabel>
-      </Form.Group>
-
+      <Row
+        className={`${styles["form-control"]} ${
+          !validFields.username && styles.invalid
+        }`}
+      >
+        <Form.Group className="mb-3">
+          <FloatingLabel
+            onChange={usernameHandler}
+            controlId="username"
+            label="Username"
+          >
+            <Form.Control type="text" placeholder="Username" />
+          </FloatingLabel>
+        </Form.Group>
+      </Row>
+      <Row
+        className={`${styles["form-control"]} ${
+          !validFields.email && styles.invalid
+        }`}
+      >
+        <Form.Group className="mb-3">
+          <FloatingLabel
+            onChange={emailHandler}
+            controlId="email"
+            label="Email address "
+          >
+            <Form.Control type="email" placeholder="name@example.com" />
+          </FloatingLabel>
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+      </Row>
+      <Row
+        className={`${styles["form-control"]} ${
+          !validFields.password && styles.invalid
+        }`}
+      >
+        <Form.Group className="mb-3">
+          <FloatingLabel
+            onChange={passwordHandler}
+            controlId="password"
+            label="Password "
+          >
+            <Form.Control type="password" placeholder="Password" />
+          </FloatingLabel>
+        </Form.Group>
+      </Row>
+      {validFields.message && <p>{validFields.message}</p>}
       <Button variant="dark" type="submit">
         SignUp
       </Button>

@@ -2,8 +2,14 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Income from "../../../assets/images/income.svg";
 import { Link } from "react-router-dom";
 import LoginForm from "./LoginForm/LoginForm";
+import { useDispatch } from "react-redux";
+import { enableViewLogin } from "../../../store/slices/signUpSlice/signUpSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const siginHandler = () => {
+    dispatch(enableViewLogin());
+  };
   return (
     <div className="App">
       <Container>
@@ -17,7 +23,9 @@ const Login = () => {
               <img src={Income} alt="Income, peggybank on top of a laptop" />
               <p>Sing up instead if you dont have an account yet</p>
               <Link to={"/sign"}>
-                <Button variant="secondary">Sign up</Button>
+                <Button onClick={siginHandler} variant="secondary">
+                  Sign up
+                </Button>
               </Link>
             </div>
           </Col>

@@ -3,29 +3,18 @@ import { createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
   expenseItem: {
-    id: 1,
-    expenseType: "",
-    account: "",
+    id_expense: 1,
+    expense_type: "",
+    origin_account: "",
     amount: "",
-    currency: "USD",
-    category: "",
-    date: "",
+    id_currency: "USD",
+    to_account: "",
+    id_category: "",
+    expense_date: "",
     description: "",
-    showDescription: false,
+    showdescription: false,
   },
-  expenseList: [
-    {
-      id: 0,
-      expenseType: "Expense",
-      account: "9345693",
-      amount: "345",
-      currency: "EUR",
-      category: "Housing",
-      date: "2022-11-23",
-      description: "sdgdfgsdfg",
-      showDescription: false,
-    },
-  ],
+  expenseList: [],
   invalidExpenseType: false,
   invalidAccount: false,
   invalidCategory: false,
@@ -37,13 +26,14 @@ export const expenseSlice = createSlice({
   initialState,
   reducers: {
     addExpenseItem: (state, { payload }) => {
-      state.expenseItem.id = payload.id;
-      state.expenseItem.expenseType = payload.expenseType;
-      state.expenseItem.account = payload.account;
+      state.expenseItem.id_expense = payload.id_expense;
+      state.expenseItem.expense_type = payload.expense_type;
+      state.expenseItem.origin_account = payload.origin_account;
       state.expenseItem.amount = payload.amount;
-      state.expenseItem.currency = payload.currency;
-      state.expenseItem.category = payload.category;
-      state.expenseItem.date = payload.date;
+      state.expenseItem.to_account = payload.to_account;
+      state.expenseItem.id_currency = payload.id_currency;
+      state.expenseItem.id_category = payload.id_category;
+      state.expenseItem.expense_date = payload.expense_date;
       state.expenseItem.description = payload.description;
     },
     appendItemToExpenseList: (state, action) => {
@@ -65,8 +55,8 @@ export const expenseSlice = createSlice({
       state.invalidDate = payload;
     },
     showDescriptionEnabler: (state, { payload }) => {
-      state.expenseList[payload].showDescription =
-        !state.expenseList[payload].showDescription;
+      state.expenseList[payload].showdescription =
+        !state.expenseList[payload].showdescription;
     },
   },
 });

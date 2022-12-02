@@ -37,12 +37,12 @@ export const AccountItem = () => {
   return accountList.length > 0 ? (
     accountList.map((i) => (
       <Container key={i.id} className="d-block">
-        <Row className="account-item">
+        <Row className="origin_account-item">
           <Col>
             <h2>{i.name}</h2>
             <p>{i.number}</p>
           </Col>
-          <Col className="account-item__center">
+          <Col className="origin_account-item__center">
             <button onClick={() => updateAccount(i.id)}>
               <FontAwesomeIcon icon={faPencil} />
             </button>
@@ -50,9 +50,9 @@ export const AccountItem = () => {
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </Col>
-          <Col className="account-item__last">
-            <div className="account-item__balance">
-              {i.currency} {i.balance}
+          <Col className="origin_account-item__last">
+            <div className="origin_account-item__balance">
+              {i.id_currency} {i.balance}
             </div>
             <Row>{i.type}</Row>
           </Col>

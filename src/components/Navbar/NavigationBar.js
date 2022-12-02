@@ -5,14 +5,14 @@ import { logoutUser } from "../../store/slices/signUpSlice/signUpSlice";
 
 const NavigationBar = () => {
   const dispatch = useDispatch();
-  const userName = useSelector((state) => state.signUp.username);
+  const { firstName } = useSelector((state) => state.signUp.userInfo);
   const logoutHanddler = () => {
     dispatch(logoutUser());
   };
   return (
     <Navbar bg="light" expand="sm">
       <Container>
-        <Navbar.Text>Hola {userName}!</Navbar.Text>
+        <Navbar.Text>Hola {firstName}!</Navbar.Text>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Nav>

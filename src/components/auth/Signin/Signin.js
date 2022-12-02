@@ -3,8 +3,14 @@ import SignUpForm from "./SignUpForm/SignUpForm";
 import EWallet from "../../../assets/images/eWallet.svg";
 
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { enableViewLogin } from "../../../store/slices/signUpSlice/signUpSlice";
 
 const Signin = () => {
+  const dispatch = useDispatch();
+  const loginHandler = () => {
+    dispatch(enableViewLogin());
+  };
   return (
     <div className="App">
       <Container>
@@ -14,7 +20,9 @@ const Signin = () => {
               <img src={EWallet} alt="e wallet with cellphone" />
               <p>Log in istead if you already have an account</p>
               <Link to={"/login"}>
-                <Button variant="secondary">Login</Button>
+                <Button onClick={loginHandler} variant="secondary">
+                  Login
+                </Button>
               </Link>
             </div>
           </Col>

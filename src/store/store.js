@@ -6,6 +6,7 @@ import signUpSlice from "./slices/signUpSlice/signUpSlice";
 import accountFilterSlice from "./slices/filterSlice/accountFilterSlice/accountFilterSlice";
 import categoryFilterSlice from "./slices/filterSlice/categoryFilterSlice/categoryFilterSlice";
 import dateFilterSlice from "./slices/filterSlice/dateFilterSlice/dateFilterSlice";
+import categorySlice from "./slices/formSlice/categorySlice/categorySlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     accountFilter: accountFilterSlice,
     dateFilter: dateFilterSlice,
     categoryFilter: categoryFilterSlice,
+    category: categorySlice,
   },
 });

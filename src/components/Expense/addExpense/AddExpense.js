@@ -14,10 +14,16 @@ import {
   transactionForm,
   updateEnabler,
 } from "../../../store/slices/formSlice/formSlice";
-import addedItem from "../../../store/slices/formSlice/expenseSlice/thunk";
+import {
+  addedItem,
+  getAllExpenses,
+} from "../../../store/slices/formSlice/expenseSlice/thunk";
 import { AmountMoneyInput } from "../../UI/AmountMoneyInput";
 import { CurrencySelect } from "../../UI/CurrencySelect";
 import styles from "./AddExpense.module.css";
+import { useEffect } from "react";
+import { setAllCategories } from "../../../store/slices/formSlice/categorySlice/categorySlice";
+import { addCategoryTypes } from "../../../store/slices/formSlice/categorySlice/thunk";
 
 export const AddExpense = () => {
   const dispatch = useDispatch();
@@ -32,29 +38,45 @@ export const AddExpense = () => {
   const { invalidAccountBalance, activateUpdate } = useSelector(
     (state) => state.form
   );
+  const category = useSelector((store) => store.category.categories);
+
+  useEffect(() => {
+    dispatch(addCategoryTypes());
+  }, []);
   // collects the type of expense and asigns the state in const
   const valueTypeHandler = (event) => {
     dispatch(expenseTypeValidator(false));
-    dispatch(addExpenseItem({ ...expenseItem, expenseType: event }));
+    dispatch(addExpenseItem({ ...expenseItem, expense_type: event }));
   };
   // Account to be debited or credited here
   const valueAccountHandler = (event) => {
     dispatch(accountValidator(false));
-    dispatch(addExpenseItem({ ...expenseItem, account: event.target.value }));
+    dispatch(
+      addExpenseItem({ ...expenseItem, origin_account: event.target.value })
+    );
+  };
+
+  const changeToAccount = (event) => {
+    dispatch(
+      addExpenseItem({ ...expenseItem, to_account: event.target.value })
+    );
   };
   // Category whom expense belongs
   const categoryHandler = (event) => {
     dispatch(categoryValidator(false));
-    dispatch(addExpenseItem({ ...expenseItem, category: event.target.value }));
+    dispatch(
+      addExpenseItem({ ...expenseItem, id_category: event.target.value })
+    );
   };
   //DATE
   const dateChangeHandler = (event) => {
     dispatch(dateValidator(false));
-    dispatch(addExpenseItem({ ...expenseItem, date: event.target.value }));
+    dispatch(
+      addExpenseItem({ ...expenseItem, expense_date: event.target.value })
+    );
   };
   //DESCRIPTION
   const descriptionHandler = (event) => {
-    console.log(event.target.value);
     dispatch(
       addExpenseItem({ ...expenseItem, description: event.target.value })
     );
@@ -65,12 +87,13 @@ export const AddExpense = () => {
   const showAddExpenseHanddler = () => {
     const expenseCleared = {
       ...expenseItem,
-      expenseType: "",
-      account: "",
+      expense_type: "",
+      origin_account: "",
       amount: "",
-      currency: "USD",
-      category: "",
-      date: "",
+      id_currency: "154",
+      to_account: "",
+      id_category: "",
+      expense_date: "",
       description: "",
     };
     dispatch(transactionForm(false));
@@ -87,25 +110,25 @@ export const AddExpense = () => {
   const submitHandler = (event) => {
     event.preventDefault();
     if (
-      expenseItem.expenseType === "" ||
-      expenseItem.account === "" ||
+      expenseItem.expense_type === "" ||
+      expenseItem.origin_account === "" ||
       expenseItem.amount.length === 0 ||
-      expenseItem.category === "" ||
-      expenseItem.date === ""
+      expenseItem.id_category === "" ||
+      expenseItem.expense_date === ""
     ) {
-      if (expenseItem.expenseType === "") {
+      if (expenseItem.expense_type === "") {
         dispatch(expenseTypeValidator(true));
       }
-      if (expenseItem.account === "") {
+      if (expenseItem.origin_account === "") {
         dispatch(accountValidator(true));
       }
       if (expenseItem.amount.length === 0) {
         dispatch(accountBalanceValidator(true));
       }
-      if (expenseItem.category === "") {
+      if (expenseItem.id_category === "") {
         dispatch(categoryValidator(true));
       }
-      if (expenseItem.date === "") {
+      if (expenseItem.expense_date === "") {
         dispatch(dateValidator(true));
       }
       return;
@@ -118,14 +141,15 @@ export const AddExpense = () => {
       dispatch(addedItem());
       const expenseCleared = {
         id: "",
-        expenseType: "",
-        account: "",
+        expense_type: "",
+        origin_account: "",
         amount: "",
-        currency: "USD",
-        category: "",
-        date: "",
+        id_currency: "154",
+        to_account: "",
+        id_category: "",
+        expense_date: "",
         description: "",
-        showDescription: false,
+        showdescription: false,
       };
       dispatch(addExpenseItem(expenseCleared));
       dispatch(updateEnabler(false));
@@ -139,35 +163,23 @@ export const AddExpense = () => {
       dispatch(addedItem());
       const expenseCleared = {
         id: uuidv4(),
-        expenseType: "",
-        account: "",
+        expense_type: "",
+        origin_account: "",
         amount: "",
-        currency: "USD",
-        category: "",
-        date: "",
+        id_currency: "154",
+        to_account: "",
+        id_category: "",
+        expense_date: "",
         description: "",
-        showDescription: false,
+        showdescription: false,
       };
       dispatch(addExpenseItem(expenseCleared));
     }
 
     dispatch(transactionForm(false));
   };
-  const { accountList } = useSelector((state) => state.account);
 
-  const category = [
-    "Food & Drinks",
-    "Shopping",
-    "Housing",
-    "Transportation",
-    "Vehicle",
-    "Life & Entertainment",
-    "Communication, PC",
-    "Financial expenses",
-    "Investments",
-    "Income",
-    "Others",
-  ];
+  const { accountList } = useSelector((state) => state.account);
 
   return (
     <Form onSubmit={submitHandler}>
@@ -179,8 +191,8 @@ export const AddExpense = () => {
           invalidExpenseType && styles.invalid
         }`}
         type="radio"
-        name="expenseType"
-        value={expenseItem.expenseType}
+        name="expense_type"
+        value={expenseItem.expense_type}
         onChange={valueTypeHandler}
       >
         <ToggleButton id="Income" value="Income" variant="outline-success">
@@ -200,7 +212,7 @@ export const AddExpense = () => {
         <label>Account</label>
         <select
           id="accountDebited"
-          value={expenseItem.account}
+          value={expenseItem.origin_account}
           onChange={valueAccountHandler}
         >
           <option></option>
@@ -224,7 +236,24 @@ export const AddExpense = () => {
       {/* --CURRENCY-- that comes from component as well  */}
       <br />
       <CurrencySelect />
-
+      {expenseItem.expense_type === "Expense" && (
+        <div
+          className={`${styles["form-control"]} ${
+            invalidAccount && styles.invalid
+          }`}
+        >
+          <label>Destination Account</label>
+          <h6>
+            Type the destination account number here to make the transaction or
+            leave it blank if you just want to record the expense
+          </h6>
+          <input
+            type="number"
+            onChange={changeToAccount}
+            value={expenseItem.to_account}
+          />
+        </div>
+      )}
       {/* --CATEGORY-- for expenses select option*/}
       <div
         className={`${styles["form-control"]} ${
@@ -234,13 +263,13 @@ export const AddExpense = () => {
         <label>Category</label>
         <select
           id="categoryOfExpense"
-          value={expenseItem.category}
+          value={expenseItem.id_category}
           onChange={categoryHandler}
         >
           <option></option>
           {category.map((item, index) => (
-            <option key={index} value={item}>
-              {item}
+            <option key={item.id_category} value={item.id_category}>
+              {item.name}
             </option>
           ))}
         </select>
@@ -255,7 +284,7 @@ export const AddExpense = () => {
           type="date"
           min="2018-01-01"
           max="2025-01-01"
-          value={expenseItem.date}
+          value={expenseItem.expense_date}
           onChange={dateChangeHandler}
         />
       </div>

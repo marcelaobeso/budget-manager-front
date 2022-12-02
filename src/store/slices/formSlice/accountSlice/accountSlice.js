@@ -7,7 +7,7 @@ const initialState = {
       name: "miaw, miaw",
       number: 9345693,
       type: "Current Account",
-      currency: "GTQ",
+      id_currency: "GTQ",
       balance: 234,
     },
   ],

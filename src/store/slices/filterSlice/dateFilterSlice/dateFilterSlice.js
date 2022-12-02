@@ -10,7 +10,6 @@ export const dateFilterSlice = createSlice({
   reducers: {
     viewFilterDatexpensesSetter: (state, { payload }) => {
       state.viewExpenseList = payload;
-      console.log(state.viewExpenseList);
     },
   },
 });

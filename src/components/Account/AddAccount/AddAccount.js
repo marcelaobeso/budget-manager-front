@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { newNotDeletedAccountList } from "../../../store/slices/formSlice/accountSlice/accountSlice";
 import addedItem from "../../../store/slices/formSlice/accountSlice/thunk";
+import { addAccountTypes } from "../../../store/slices/formSlice/categorySlice/thunk";
 import {
   accountBalanceValidator,
   accountForm,
@@ -20,6 +21,7 @@ export const AddAccount = () => {
   const [disableAccountNumber, setDisableAccountNumber] = useState(false);
 
   const dispatch = useDispatch();
+  const type = useSelector((store) => store.category.type);
   const accountList = useSelector((store) => store.account.accountList);
   const {
     newAccountItem,
@@ -59,28 +61,17 @@ export const AddAccount = () => {
   useEffect(() => {
     if (newAccountItem.type === "Cash") {
       setDisableAccountNumber(true);
-      dispatch(addNewAccountItem({ ...newAccountItem, number: "" }));
+      dispatch(addNewAccountItem({ ...newAccountItem, number: 0 }));
       dispatch(accountNumberValidator(false));
-      return;
     } else {
       setDisableAccountNumber(false);
       dispatch(addNewAccountItem({ ...newAccountItem, number: "" }));
-      return;
     }
   }, [newAccountItem.type]);
-  const type = [
-    "General",
-    "Cash",
-    "Current Account",
-    "Credit Card",
-    "Account with Overdraft",
-    "Saving Account",
-    "Bonus",
-    "Insurance",
-    "Investment",
-    "Loan",
-    "Mortgage",
-  ];
+  useEffect(() => {
+    dispatch(addAccountTypes());
+  }, []);
+
   const ShowAddAccountHanddler = () => {
     dispatch(accountForm(false));
     dispatch(accountNameValidator(false));
@@ -92,7 +83,7 @@ export const AddAccount = () => {
       name: "",
       number: 0,
       type: "General",
-      currency: "USD",
+      id_currency: "154",
       balance: "",
     };
     dispatch(addNewAccountItem(accountItem));
@@ -129,7 +120,7 @@ export const AddAccount = () => {
         name: "",
         number: "",
         type: "General",
-        currency: "USD",
+        id_currency: "154",
         balance: "",
       };
       dispatch(addNewAccountItem(accountItem));
@@ -144,7 +135,7 @@ export const AddAccount = () => {
         name: "",
         number: "",
         type: "General",
-        currency: "USD",
+        id_currency: "154",
         balance: "",
       };
       dispatch(addNewAccountItem(accountItem));
@@ -180,8 +171,8 @@ export const AddAccount = () => {
           onChange={typeChangeHandler}
         >
           {type.map((item, index) => (
-            <option key={index} value={item}>
-              {item}
+            <option key={index} value={item.id_type}>
+              {item.name}
             </option>
           ))}
         </select>
@@ -203,7 +194,7 @@ export const AddAccount = () => {
         </div>
 
         <br />
-        {/* Currency for account selector, dropdown list with preseted values */}
+        {/* Currency for origin_account selector, dropdown list with preseted values */}
         <br />
         <CurrencySelect />
         <br />

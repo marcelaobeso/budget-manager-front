@@ -8,9 +8,8 @@ export const DateFilter = () => {
   const dispatch = useDispatch();
 
   const dateFilterChangeHandler = (event) => {
-    console.log(expenseList);
     const newExpensesList = expenseList.filter(
-      (item, i) => item.date === event.target.value
+      (item, i) => item.expense_date === event.target.value
     );
     dispatch(viewFilterDatexpensesSetter(newExpensesList));
     if (event.target.value.length === 0) {
