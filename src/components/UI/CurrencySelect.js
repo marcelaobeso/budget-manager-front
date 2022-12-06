@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCurrencies } from "../../store/slices/formSlice/categorySlice/thunk";
 import { addExpenseItem } from "../../store/slices/formSlice/expenseSlice/expenseSlice";
 
-import { addNewAccountItem } from "../../store/slices/formSlice/formSlice";
+import { addNewAccountItem } from "../../store/slices/formSlice/accountSlice/accountSlice";
 export const CurrencySelect = () => {
-  const { newAccountItem, showAddAccountForm, showAddExpenseForm } =
-    useSelector((state) => state.form);
+  const { showAddAccountForm, showAddExpenseForm } = useSelector(
+    (state) => state.form
+  );
+  const { newAccountItem } = useSelector((state) => state.account);
   const currencies = useSelector((store) => store.category.currencies);
   const expenseItem = useSelector((state) => state.expense.expenseItem);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(addCurrencies());
-  }, []);
+
   const currencyChangeHandler = (event) => {
     if (showAddAccountForm) {
       dispatch(
@@ -38,7 +38,7 @@ export const CurrencySelect = () => {
         onChange={currencyChangeHandler}
       >
         {currencies.map((item, index) => (
-          <option key={item.id_currency} value={item.name}>
+          <option key={item.id_currency} value={item.id_currency}>
             {item.name}
           </option>
         ))}
@@ -53,7 +53,7 @@ export const CurrencySelect = () => {
         onChange={currencyChangeHandler}
       >
         {currencies.map((item, index) => (
-          <option key={item.id_currency} value={item.name}>
+          <option key={item.id_currency} value={item.id_currency}>
             {item.name}
           </option>
         ))}

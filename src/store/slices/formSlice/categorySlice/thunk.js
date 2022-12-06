@@ -20,7 +20,6 @@ export const addCategoryTypes = () => {
 export const addCurrencies = () => {
   return async (dispatch, getState) => {
     const { data } = await budgetApi.get("/account/currencies");
-    console.log(data);
     dispatch(setCurrencies(data.currency));
   };
 };

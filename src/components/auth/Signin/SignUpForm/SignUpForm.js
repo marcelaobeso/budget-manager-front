@@ -17,33 +17,33 @@ const SignUpForm = () => {
 
   const firstNameHandler = (event) => {
     if (event.target.value.trim().length > 0) {
-      dispatch(signUpUser({ ...userInfo, firstName: event.target.value }));
       dispatch(fristNameFieldsValidator({ ...validFields, firstName: true }));
     }
+    dispatch(signUpUser({ ...userInfo, firstName: event.target.value }));
   };
   const lastNameHandler = (event) => {
     if (event.target.value.trim().length > 0) {
-      dispatch(signUpUser({ ...userInfo, lastName: event.target.value }));
       dispatch(lastNameFieldsValidator({ ...validFields, lastName: true }));
     }
+    dispatch(signUpUser({ ...userInfo, lastName: event.target.value }));
   };
   const usernameHandler = (event) => {
     if (event.target.value.trim().length > 0) {
-      dispatch(signUpUser({ ...userInfo, username: event.target.value }));
       dispatch(usernameFieldsValidator({ ...validFields, username: true }));
     }
+    dispatch(signUpUser({ ...userInfo, username: event.target.value }));
   };
   const emailHandler = (event) => {
     if (event.target.value.length > 4) {
-      dispatch(signUpUser({ ...userInfo, email: event.target.value }));
       dispatch(emailFieldsValidator({ ...validFields, email: true }));
     }
+    dispatch(signUpUser({ ...userInfo, email: event.target.value }));
   };
   const passwordHandler = (event) => {
     if (event.target.value.trim().length > 0) {
-      dispatch(signUpUser({ ...userInfo, password: event.target.value }));
       dispatch(passwordFieldsValidator({ ...validFields, password: true }));
     }
+    dispatch(signUpUser({ ...userInfo, password: event.target.value }));
   };
   const { signin } = useAuthStore();
   const formHandler = (event) => {
@@ -79,7 +79,6 @@ const SignUpForm = () => {
       }
       return;
     }
-    console.log(userInfo);
 
     signin({
       email: userInfo.email,

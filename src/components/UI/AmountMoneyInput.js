@@ -4,11 +4,13 @@ import { addExpenseItem } from "../../store/slices/formSlice/expenseSlice/expens
 import {
   accountBalanceValidator,
   addNewAccountItem,
-} from "../../store/slices/formSlice/formSlice";
+} from "../../store/slices/formSlice/accountSlice/accountSlice";
 
 export const AmountMoneyInput = () => {
-  const { newAccountItem, showAddExpenseForm, showAddAccountForm } =
-    useSelector((state) => state.form);
+  const { showAddExpenseForm, showAddAccountForm } = useSelector(
+    (state) => state.form
+  );
+  const { newAccountItem } = useSelector((state) => state.account);
   const expenseItem = useSelector((state) => state.expense.expenseItem);
   const dispatch = useDispatch();
 

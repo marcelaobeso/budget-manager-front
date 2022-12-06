@@ -1,15 +1,26 @@
-import { appendItemToAccountList } from "./accountSlice.js";
+import budgetApi from "../../../../api/budgetApi.js";
+import {
+  appendItemToAccountList,
+  newNotDeletedAccountList,
+} from "./accountSlice.js";
 
-const addedItem = (itemType) => {
+export const addedItem = (itemType) => {
   return (dispatch, getState) => {
-    // const replacedColor = {
-    // 	id: 0,
-    // 	name: '',
-    // };
-
-    const newAddedItem = getState().form.newAccountItem;
-
+    const newAddedItem = getState().account.newAccountItem;
+    console.log(newAddedItem);
     dispatch(appendItemToAccountList(newAddedItem));
   };
 };
-export default addedItem;
+export const getAllAccounts = () => {
+  return async (dispatch, getState) => {
+    const { userInfo } = getState().signUp;
+    console.log(userInfo.idUser);
+    const { data } = await budgetApi.get("/account/accounts", {
+      params: { idUser: userInfo.idUser },
+    });
+    console.log(data.accounts);
+    data.accounts
+      ? dispatch(newNotDeletedAccountList(data.accounts))
+      : dispatch(newNotDeletedAccountList([]));
+  };
+};

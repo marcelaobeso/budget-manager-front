@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { newNotDeletedAccountList } from "../../../store/slices/formSlice/accountSlice/accountSlice";
-import addedItem from "../../../store/slices/formSlice/accountSlice/thunk";
+import { addedItem } from "../../../store/slices/formSlice/accountSlice/thunk";
 import { addAccountTypes } from "../../../store/slices/formSlice/categorySlice/thunk";
 import {
-  accountBalanceValidator,
   accountForm,
-  accountNameValidator,
-  accountNumberValidator,
-  addNewAccountItem,
   updateEnabler,
 } from "../../../store/slices/formSlice/formSlice";
+import {
+  addNewAccountItem,
+  accountBalanceValidator,
+  accountNameValidator,
+  accountNumberValidator,
+} from "../../../store/slices/formSlice/accountSlice/accountSlice";
 
 import { AmountMoneyInput } from "../../UI/AmountMoneyInput";
 import { CurrencySelect } from "../../UI/CurrencySelect";
@@ -23,13 +25,13 @@ export const AddAccount = () => {
   const dispatch = useDispatch();
   const type = useSelector((store) => store.category.type);
   const accountList = useSelector((store) => store.account.accountList);
+  const { activateUpdate } = useSelector((state) => state.form);
   const {
     newAccountItem,
     invalidAccountName,
     invalidAccountNumber,
     invalidAccountBalance,
-    activateUpdate,
-  } = useSelector((state) => state.form);
+  } = useSelector((state) => state.account);
 
   const accountNameHandler = (event) => {
     if (event.target.value.trim().length > 0) {
@@ -110,7 +112,7 @@ export const AddAccount = () => {
     }
     if (activateUpdate) {
       let notUpdatedAccounts = accountList.filter(
-        (item) => item.id !== newAccountItem.id
+        (item) => item.id_account !== newAccountItem.id_account
       );
       dispatch(newNotDeletedAccountList(notUpdatedAccounts));
       dispatch(addedItem());
@@ -203,7 +205,7 @@ export const AddAccount = () => {
             invalidAccountBalance && styles.invalid
           }`}
         >
-          <label>Balance</label>
+          <label>Initial alance</label>
           <AmountMoneyInput />
         </div>
         {!activateUpdate ? (

@@ -1,7 +1,7 @@
 import { Account } from "./Account/Account";
 import { Transaction } from "./Expense/Transaction";
 import NavigationBar from "./Navbar/NavigationBar";
-import { Col, Container, Row } from "react-bootstrap";
+import { Alert, Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AddExpense } from "./Expense/addExpense/AddExpense";
 import { AddAccount } from "./Account/AddAccount/AddAccount";
@@ -17,6 +17,7 @@ import { DateFilter } from "./Filters/DateFilter/DateFilter";
 const Budget = () => {
   const { showAddExpenseForm: showExpense, showAddAccountForm: showAccount } =
     useSelector((state) => state.form);
+  const { alert, showAlert } = useSelector((state) => state.alert);
   const dispatch = useDispatch();
   const showAddExpenseHanddler = () => {
     dispatch(transactionForm(true));
@@ -27,6 +28,7 @@ const Budget = () => {
   return (
     <>
       <NavigationBar />
+      {showAlert && <Alert variant="danger">{alert}</Alert>}
       <Container>
         <Row>
           <Col xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>

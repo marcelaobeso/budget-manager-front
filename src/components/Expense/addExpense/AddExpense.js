@@ -10,13 +10,13 @@ import {
   newNotDeletedExpenseList,
 } from "../../../store/slices/formSlice/expenseSlice/expenseSlice";
 import {
-  accountBalanceValidator,
   transactionForm,
   updateEnabler,
 } from "../../../store/slices/formSlice/formSlice";
+import { accountBalanceValidator } from "../../../store/slices/formSlice/accountSlice/accountSlice";
 import {
   addedItem,
-  getAllExpenses,
+  editEvent,
 } from "../../../store/slices/formSlice/expenseSlice/thunk";
 import { AmountMoneyInput } from "../../UI/AmountMoneyInput";
 import { CurrencySelect } from "../../UI/CurrencySelect";
@@ -137,8 +137,9 @@ export const AddExpense = () => {
       let notUpdatedList = expenseList.filter(
         (item) => item.id !== expenseItem.id
       );
-      dispatch(newNotDeletedExpenseList(notUpdatedList));
-      dispatch(addedItem());
+      dispatch(editEvent());
+      // dispatch(newNotDeletedExpenseList(notUpdatedList));
+      // dispatch(addedItem());
       const expenseCleared = {
         id: "",
         expense_type: "",
@@ -154,15 +155,17 @@ export const AddExpense = () => {
       dispatch(addExpenseItem(expenseCleared));
       dispatch(updateEnabler(false));
     } else {
-      dispatch(
-        addExpenseItem({
-          ...expenseItem,
-          id: uuidv4(),
-        })
-      );
+      if (expenseItem.to_account === "") {
+        dispatch(
+          addExpenseItem({
+            ...expenseItem,
+            to_account: 2,
+          })
+        );
+      }
+
       dispatch(addedItem());
       const expenseCleared = {
-        id: uuidv4(),
         expense_type: "",
         origin_account: "",
         amount: "",
@@ -216,9 +219,9 @@ export const AddExpense = () => {
           onChange={valueAccountHandler}
         >
           <option></option>
-          {accountList.map((item, index) => (
-            <option key={index} value={item.number}>
-              {item.number} | {item.type}
+          {accountList.map((i, index) => (
+            <option key={i.id_account} value={i.id_account}>
+              {i.account_number} | {i.account_type}
             </option>
           ))}
         </select>
